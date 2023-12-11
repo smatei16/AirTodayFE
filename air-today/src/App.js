@@ -3,13 +3,15 @@ import './App.css';
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import AuthDetails from './components/auth/AuthDetails';
+import MapComponent from './components/map/MapComponent';
 
 function App() {
   return (
     <div className="App">
-      <SignIn></SignIn>
+      {/* <SignIn></SignIn>
       <SignUp></SignUp>
-      <AuthDetails></AuthDetails>
+      <AuthDetails></AuthDetails> */}
+      <MapComponent></MapComponent>
     </div>
   );
 }
