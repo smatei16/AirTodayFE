@@ -1,12 +1,13 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from 'react';
 import { auth } from "../../firebase";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './SignIn.css';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const signIn = (e) => {
     e.preventDefault();
@@ -16,6 +17,10 @@ const SignIn = () => {
       }).catch((error) => {
         console.log(error);
       });
+  }
+
+  const navigateMap = () => {
+    navigate('/map');
   }
 
   return (
@@ -28,7 +33,7 @@ const SignIn = () => {
         <div className="mb-3">
           <input type='password' className='form-control' placeholder='Enter your password' value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
-        <button type='submit' className='btn btn-primary'>Log In</button>
+        <button type='submit' className='btn btn-primary' onClick={navigateMap}>Log In</button>
       </form>
 
       <div className="mt-3">

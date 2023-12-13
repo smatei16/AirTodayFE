@@ -1,7 +1,7 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from 'react';
 import { auth } from "../../firebase";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './SignUp.css';
 
 const SignUp = () => {
@@ -9,6 +9,7 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const navigate = useNavigate();
 
   const signUp = (e) => {
     e.preventDefault();
@@ -38,6 +39,10 @@ const SignUp = () => {
       });
   }
 
+  const navigateSignIn = () => {
+    navigate('/');
+  }
+
   return (
     <div className='sign-up-container'>
       <form onSubmit={signUp}>
@@ -60,7 +65,7 @@ const SignUp = () => {
           <input type='password' placeholder='Confirm your password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
         </div>
         {passwordError && <div className="password-error">{passwordError}</div>}
-        <button type='submit'>Sign Up</button>
+        <button type='submit' onClick={navigateSignIn}>Sign Up</button>
       </form>
     </div>
   )
