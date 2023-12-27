@@ -14,6 +14,7 @@ const SignIn = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential);
+        navigateMap();
       }).catch((error) => {
         console.log(error);
       });
@@ -33,7 +34,7 @@ const SignIn = () => {
         <div className="mb-3">
           <input type='password' className='form-control' placeholder='Enter your password' value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
-        <button type='submit' className='btn btn-primary' onClick={navigateMap}>Log In</button>
+        <button type='submit' className='btn btn-primary'>Log In</button>
       </form>
 
       <div className="mt-3">
