@@ -5,6 +5,7 @@ import { loadModules } from 'esri-loader';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import logo from '../../assets/Logo.png';
 import './MapComponent.css';
 
 const MapComponent = () => {
@@ -21,7 +22,7 @@ const MapComponent = () => {
         setCurrentUser(user);
       } else {
         setCurrentUser(null);
-        //navigateLogin();
+        navigateLogin();
       }
     });
   }, []);
@@ -77,7 +78,7 @@ const MapComponent = () => {
             //'apikey': 'TssNii8X18s027VN30d8CZbMr45rcq72',
 
             //Raul
-            'apikey': 'en7iONTYaGcpR5kH5bmu32n132girE4J',
+            'apikey': 'OTzCVcByYXmUhmxSSnEuQJVlQl7W5vxi',
           },
         }
       );
@@ -108,7 +109,7 @@ const MapComponent = () => {
             //'apikey': 'TssNii8X18s027VN30d8CZbMr45rcq72',
 
             //Raul
-            'apikey': 'en7iONTYaGcpR5kH5bmu32n132girE4J',
+            'apikey': 'OTzCVcByYXmUhmxSSnEuQJVlQl7W5vxi',
           },
         }
       );
@@ -154,9 +155,11 @@ const MapComponent = () => {
 
         // Create a home button
         const homeButton = document.createElement('button');
-        homeButton.innerHTML = '<img src="../../../public/home.png" alt="Home" size="5" />';
+        const homeimg = document.createElement('img');
+        homeimg.setAttribute('src', "../../assets/home.png");
+        // homeButton.innerHTML = '<img src="../../assets/home.png" alt="Home" size="5" />';
         homeButton.className = 'esri-widget esri-widget--button esri-interactive';
-
+        homeButton.appendChild(homeimg);  
         // Add a click event handler to the home button
         homeButton.addEventListener('click', () => {
           // Set the view to the initial center and zoom
@@ -325,10 +328,12 @@ const MapComponent = () => {
 
   return (
     <div>
-      <div style={{ backgroundColor: '#f8f9fa', padding: '0px', borderBottom: '1px solid #ccc' }}>
-        <p style={{ margin: 0 }}>Signed in as {currentUser ? currentUser.email : 'Unknown user'}</p>
-        <button onClick={handleSignOut}>Logout</button>
-      </div>
+      <nav class="navmap">
+        <img src={logo} alt="Logo" class='logomap' height="50" onClick={() => navigate("/")}></img>
+        <div className="nav-buttons">
+          <button className='button-32' onClick={() => handleSignOut()}>Sign Out</button>
+        </div>
+      </nav>
       <div id="mapContainer1" style={{ height: 'calc(100vh - 60px)' }}></div>
     </div>
   );

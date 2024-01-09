@@ -9,7 +9,7 @@
 
 .nav1 {
   background-color: #333;
-  padding: 10px;
+  padding: 5px;
   color: white;
   display: flex;
   justify-content: space-between;
@@ -223,8 +223,8 @@
   border-radius: 7px;
   font-weight: 600;
   width: 100px;
-  margin-top: -5px;
-  margin-bottom: 5px;
+  margin-top: -10px;
+  margin-bottom: -5px;
   transition: 0.6s;
 }
 

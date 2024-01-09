@@ -49,19 +49,19 @@ const LandingPage = () => {
       <div className="main-content">
       <section>
         <h3 class="heading">Users</h3>
-        <div class="column">
+        <div class="columnhome">
             <CountUp class="counter" start={0} end={usersEnd} duration={2} separator=','></CountUp>
         </div>
     </section>
     <section>
         <h3 class="heading">Cities</h3>
-        <div class="column">
+        <div class="columnhome">
           <CountUp class="counter" start={0} end={citiesEnd} duration={2} separator=','></CountUp>
         </div>
     </section>
     <section>
         <h3 class="heading">Sensors</h3>
-        <div class="column">
+        <div class="columnhome">
           <CountUp class="counter" start={0} end={sensorsEnd} duration={2} separator=','></CountUp>+
         </div>
     </section>

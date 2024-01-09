@@ -15,7 +15,7 @@ body {
   
   .nav3 {
     background-color: #333;
-    padding: 10px;
+    padding: 5px;
     color: white;
     display: flex;
     justify-content: space-between;
@@ -62,7 +62,7 @@ body {
     font-family: 'Roboto Mono', monospace;
   }
 
-  .main-content .column{
+  .main-content .columnhome{
     padding: .1rem 1rem;
     font-size: 40px;
     font-family: 'Roboto Mono', monospace;
