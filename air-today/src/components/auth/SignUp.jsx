@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from 'react';
 import { auth } from "../../firebase";
 import { Link, useNavigate } from 'react-router-dom';
+import logo from '../../assets/Logo.png';
 import './SignUp.css';
 
 const SignUp = () => {
@@ -36,7 +37,17 @@ const SignUp = () => {
         console.log(userCredential);
         navigateSignIn();
       }).catch((error) => {
-        console.log(error);
+        // console.log(error);
+        switch(error.code){
+          case 'auth/email-already-in-use':
+            setPasswordError("Email already in use");
+            console.log(`email address already in use.`);
+            break;
+          default:
+          console.log(error.message);
+          break;
+        }
+
       });
   }
 
@@ -45,29 +56,46 @@ const SignUp = () => {
   }
 
   return (
-    <div className='sign-up-container'>
-      <form onSubmit={signUp}>
-        <h1>Create account</h1>
-        <div className="form-group">
-          <label>Email:</label>
-          <input type='email' placeholder='Enter your email' value={email} onChange={(e) => setEmail(e.target.value)} required />
+    <div>
+      <nav class="nav1">
+        <img src={logo} alt="Logo" class='logo' height="50" onClick={() => navigate("/")}></img>
+      </nav>
+      <div class="main-content2">
+        <div class="box">
+          <span class="borderLine"></span>
+          <form onSubmit={signUp}>
+            <h2>Create account</h2>
+            <div class="inputBox1">
+              <input type="email" required="required" value={email} onChange={(e) => setEmail(e.target.value)}/>
+              <span>Email</span>
+              <i></i>
+            </div>
+            <div class="inputBox1">
+              <input type="password" required="required" value={password} onChange={(e) => setPassword(e.target.value)}/>
+              <span>Password</span>
+              <i></i>
+            </div>
+            <ul class="requirements-list">
+              <li>At least 8 characters</li>
+              <li>At least one capital letter</li>
+              <li>At least one number</li>
+            </ul>
+            <div class="inputBox1">
+              <input type="password" required="required" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
+              <span>Confirm your password</span>
+              <i></i>
+            </div>
+            <div class="links">
+              <a>Already registered?</a>
+              <a href="/login">Sign In</a>
+              {/* <a className="mb-0">New to AirToday? <Link to="/register">Create an account!</Link></a> */}
+              {/* <a href="#">New to AirToday? Create an account!</a> */}
+            </div>
+            <input type="submit" value="Register"/>
+            {passwordError && <p class="error">{passwordError}</p>}
+          </form>
         </div>
-        <div className="form-group">
-          <label>Password:</label>
-          <input type='password' placeholder='Enter your password' value={password} onChange={(e) => setPassword(e.target.value)} required />
-        </div>
-        <ul className="requirements-list">
-          <li>At least 8 characters</li>
-          <li>At least one capital letter</li>
-          <li>At least one number</li>
-        </ul>
-        <div className="form-group">
-          <label>Confirm Password:</label>
-          <input type='password' placeholder='Confirm your password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
-        </div>
-        {passwordError && <div className="password-error">{passwordError}</div>}
-        <button type='submit'>Sign Up</button>
-      </form>
+      </div>
     </div>
   )
 }

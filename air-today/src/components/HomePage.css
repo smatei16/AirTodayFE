@@ -1,0 +1,115 @@
+/* App.css */
+
+body {
+    margin: 0;
+    /* background-color: #b99960; */
+    background-image: url("../assets/Clouds4.gif");
+    /* background-repeat: no-repeat; */
+    background-size:cover;
+    /* background-position: center center; */
+  }
+  
+  .landing-page {
+    text-align: center;
+  }
+  
+  .nav3 {
+    background-color: #333;
+    padding: 10px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    height: 50;
+    /* height: 10vh; */
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .nav-buttons button {
+    margin-left: 10px;
+    cursor: pointer;
+    padding: 8px 12px;
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+  
+  .main-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: center;
+    margin: 25vh;
+  }
+
+  .main-content > * {
+    width:100%;
+    /* background:#eee; */
+    border-radius:.4rem;
+}
+
+  .main-content .heading {
+    /* background:#f97171; */
+    margin:0;
+    padding:1rem;
+    border-top-left-radius:.4rem;
+    border-top-right-radius:.4rem;
+    font-size: 50px;
+    font-family: 'Roboto Mono', monospace;
+  }
+
+  .main-content .column{
+    padding: .1rem 1rem;
+    font-size: 40px;
+    font-family: 'Roboto Mono', monospace;
+  }
+
+  @media(min-width:768px){
+    .main-content > * {
+        width:calc((100% - 4rem) / 3);
+    }
+  }
+  
+  /* CSS */
+  .button-32 {
+    background-color: #f6ae84;
+    border-radius: 12px;
+    color: #000;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 10px 15px;
+    margin-right: 10px;
+    text-align: center;
+    transition: 200ms;
+    box-sizing: border-box;
+    border: 0;
+    font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .button-32:not(:disabled):hover,
+  .button-32:not(:disabled):focus {
+    outline: 0;
+    background: #f4e603;
+    box-shadow: 0 0 0 2px rgba(0,0,0,.2), 0 3px 8px 0 rgba(0,0,0,.15);
+  }
+  
+  .button-32:disabled {
+    filter: saturate(0.2) opacity(0.5);
+    -webkit-filter: saturate(0.2) opacity(0.5);
+    cursor: not-allowed;
+  }
+
+  .copyright {
+    bottom: 0px;
+    text-align: center;
+    align-items: center;
+    width: 100%;
+    color: #fff;
+  }
