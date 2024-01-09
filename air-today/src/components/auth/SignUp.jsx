@@ -34,14 +34,15 @@ const SignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential);
+        navigateSignIn();
       }).catch((error) => {
         console.log(error);
       });
   }
 
-  // const navigateSignIn = () => {
-  //   navigate('/');
-  // }
+  const navigateSignIn = () => {
+    navigate('/');
+  }
 
   return (
     <div className='sign-up-container'>
@@ -65,7 +66,6 @@ const SignUp = () => {
           <input type='password' placeholder='Confirm your password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
         </div>
         {passwordError && <div className="password-error">{passwordError}</div>}
-        {/* <button type='submit' onClick={navigateSignIn}>Sign Up</button> */}
         <button type='submit'>Sign Up</button>
       </form>
     </div>
