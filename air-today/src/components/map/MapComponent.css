@@ -1,0 +1,29 @@
+/* MapComponent.css */
+
+.esri-popup__content {
+    text-align: left;
+}
+
+/* #mapContainer1 .myTheme .esri-popup__header {
+    background: var(--popup-gradient);
+    padding: 10px 90px;
+}
+
+#mapContainer1 .myTheme .popup-header-container {
+    background: var(--popup-color);
+    padding: 10px;
+    color: white;
+} */
+
+.esri-icon-favorite {
+    color: #ffcc00;
+}
+
+.column-container {
+    display: flex;
+    justify-content: space-between;
+}
+  
+.column {
+    width: 40%;
+}

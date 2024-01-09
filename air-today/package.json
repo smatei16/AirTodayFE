@@ -7,6 +7,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "arcgis-js-api": "^4.28.10",
+    "axios": "^1.6.4",
     "bootstrap": "^5.3.2",
     "esri-loader": "^3.7.0",
     "firebase": "^10.7.1",
@@ -15,7 +16,7 @@
     "react-router-dom": "^6.20.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
-  },  
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
