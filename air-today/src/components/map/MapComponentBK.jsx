@@ -10,6 +10,7 @@ import './MapComponent.css';
 const MapComponent = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [favorites, setFavorites] = useState([]);
+  const [activeView, setActiveView] = useState(0);
   const navigate = useNavigate();
   let view;
 
@@ -35,7 +36,10 @@ const MapComponent = () => {
         return [...prevFavorites, sensorId];
       }
     });
+    
+    console.log(favorites);
   };
+
 
   const fetchAirlySensorData = async () => {
     try {
@@ -53,7 +57,7 @@ const MapComponent = () => {
             //'apikey': 'TssNii8X18s027VN30d8CZbMr45rcq72',
 
             //Raul
-            'apikey': 'iWwq684UjwzR0kbjB1CJdQfWiYzjf0Gp',
+            'apikey': 'ryvBA9hSdtMMOw88KClTQLiwZILiaBCJ',
           },
         }
       );
@@ -84,7 +88,7 @@ const MapComponent = () => {
             //'apikey': 'TssNii8X18s027VN30d8CZbMr45rcq72',
 
             //Raul
-            'apikey': 'iWwq684UjwzR0kbjB1CJdQfWiYzjf0Gp',
+            'apikey': 'ryvBA9hSdtMMOw88KClTQLiwZILiaBCJ',
           },
         }
       );
@@ -96,17 +100,29 @@ const MapComponent = () => {
     }
   };
 
-  const hexToRgb = (hex) => {
-    const bigint = parseInt(hex.slice(1), 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-    return [r, g, b];
+  const calculateRatio = (color) => {
+    // Assuming color is in the format "#RRGGBB"
+    const redValue = parseInt(color.slice(1, 3), 16);
+    const greenValue = parseInt(color.slice(3, 5), 16);
+    const blueValue = parseInt(color.slice(5, 7), 16);
+  
+    // Normalize values to range [0, 1]
+    const normalizedRed = redValue / 255;
+    const normalizedGreen = greenValue / 255;
+    const normalizedBlue = blueValue / 255;
+  
+    // Calculate the perceived intensity using a formula (adjust as needed)
+    const perceivedIntensity = (normalizedRed + normalizedGreen + normalizedBlue) / 3;
+  
+    // Normalize the perceived intensity to the range [0, 1]
+    const normalizedIntensity = perceivedIntensity;
+  
+    return normalizedIntensity;
   };
 
   useEffect(() => {
-    loadModules(['esri/config', 'esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer', 'esri/PopupTemplate'], { css: true })
-      .then(([esriConfig, Map, MapView, FeatureLayer, PopupTemplate]) => {
+    loadModules(['esri/config', 'esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer', 'esri/PopupTemplate', 'esri/geometry/Point', 'esri/geometry/Point', 'esri/Color', 'esri/Graphic', 'esri/layers/GraphicsLayer', 'esri/renderers/HeatmapRenderer'], { css: true })
+      .then(([esriConfig, Map, MapView, FeatureLayer, PopupTemplate, Point, SimpleMarkerSymbol, Color, Graphic, GraphicsLayer, HeatmapRenderer]) => {
         // Add your API key
         esriConfig.apiKey = 'AAPK6f8e89b5cf0a47948d9b73025c20fe1eX6JYT1csqWTHrDRabpXSs8zaKl_2dCXLhR7MZ5fU15PPlDnhkVzjbCqqPXqCeJtR';
 
@@ -148,36 +164,58 @@ const MapComponent = () => {
         const addAirlySensorLocations = async () => {
           try {
             const sensorData = await fetchAirlySensorData();
-            const colors = {};
-            let index = 1;
-
-            const renderer = {
+            let renderer;
+            
+            const heatRenderer = {
+              type: "heatmap",
+              colorStops: [
+                { color: "rgba(63, 40, 102, 0)", ratio: 0 },
+                //{ color: "#ffff00", ratio: 1 }
+              ],
+              maxDensity: 0.003,
+              minDensity: 0,
+              blurRadius: 20, // Adjust this value
+              maxBlurRadius: 50, // Adjust this value
+              minRadius: 10
+            };
+              
+            const uniqueRenderer = {
               type: 'unique-value',
               field: 'color',
               uniqueValueInfos: [],
             };
 
-            // Create graphics for each sensor location
-            const graphics = await Promise.all(sensorData.map(async (sensor) => {
-              // Fetch sensor details to get the color
+            if (activeView === 2) {
+              renderer = heatRenderer;
+            } else {
+              renderer = uniqueRenderer;
+            }
+
+            const filteredSensorData = activeView === 1 ? sensorData.filter(sensor => favorites.includes(sensor.id)) : sensorData;
+
+            const graphics = await Promise.all(filteredSensorData.map(async (sensor) => {
               const details = await fetchAirlySensorDetails(sensor.id);
               const color = details.data.current.indexes[0].color;
-              colors[index++] = color;
 
-              renderer.uniqueValueInfos.push({
-                value: color,
-                symbol: {
-                  type: 'simple-marker',
-                  size: 8,
+              if (activeView === 2) {
+                renderer.colorStops.push({
                   color: color,
-                  outline: {
-                    color: [255, 255, 255],
-                    width: 1,
+                  ratio: calculateRatio(color)
+                });
+              } else {
+                renderer.uniqueValueInfos.push({
+                  value: color,
+                  symbol: {
+                    type: 'simple-marker',
+                    size: 8,
+                    color: color,
+                    outline: {
+                      color: [255, 255, 255],
+                      width: 1,
+                    },
                   },
-                },
-              });
-
-
+                });;
+              }
 
               return {
                 geometry: {
@@ -185,16 +223,6 @@ const MapComponent = () => {
                   longitude: sensor.location.longitude,
                   latitude: sensor.location.latitude,
                 },
-                // type: 'unique-value',
-                // symbol: { 
-                //   type: 'simple-fill',
-                //   color: color,
-                //   outline: {
-                //     color: [255, 255, 255],
-                //     width: 1,
-                //   },
-                //   size: 8,
-                // },
               attributes: {
                   id: sensor.id,
                   country: sensor.address.country,
@@ -208,7 +236,7 @@ const MapComponent = () => {
                   humidity: details.data.current.values[4]?.value || null,
                   temperature: details.data.current.values[5]?.value || null,
                   description: details.data.current.indexes[0]?.description,
-                  advice: details.data.current.indexes[0].advice || null,
+                  advice: details.data.current.indexes[0].advice || null,              
                 },
               };
             }));
@@ -258,34 +286,27 @@ const MapComponent = () => {
                   image: "star.png", // Add the path to your star icon
                   title: 'Add to Favorites',
                   className: 'esri-icon-favorite',
-                  // execute: function () {
-                  //   console.log("Button clicked");
-                  //   const sensorId = this.graphic.attributes.id;
-                  //   addFavorite(sensorId);
-                  // }
                 }],
                 className: 'esri-popup__content',
               }),
             });
             
             map.add(airlySensorsGraphicsLayer);
-
-            view.popup.on("trigger-action", (event) => {
-              // Execute your custom logic when "Add to Favorites" is clicked
-              if (event.action.id === "addFavorite") {
-                // Implement your logic here
-                console.log("Add to Favorites clicked!");
-              }
-            });
           } catch (error) {
             console.error('Error adding Airly sensor locations to the map:', error);
           }
         };
 
         addAirlySensorLocations();
+
+        view.popup.on("trigger-action", (event) => {
+          if (event.action.id === "addFavorite" && activeView == 0) {
+            addFavorite(view.popup.selectedFeature.attributes.id)
+          }
+        });
       })
       .catch((err) => console.error(err));
-  }, []);
+  }, [activeView]);
 
 
   const handleSignOut = () => {
@@ -307,10 +328,14 @@ const MapComponent = () => {
       <div style={{ backgroundColor: '#f8f9fa', padding: '0px', borderBottom: '1px solid #ccc' }}>
         <p style={{ margin: 0 }}>Signed in as {currentUser ? currentUser.email : 'Unknown user'}</p>
         <button onClick={handleSignOut}>Logout</button>
+        <select onChange={(e) => setActiveView(Number(e.target.value))} value={activeView}>
+          <option value={0}>All Sensors</option>
+          <option value={1}>Favorite Sensors</option>
+          <option value={2}>Pollution Map</option>
+        </select>
       </div>
       <div id="mapContainer1" style={{ height: 'calc(100vh - 60px)' }}></div>
     </div>
   );
 };
-
 export default MapComponent;

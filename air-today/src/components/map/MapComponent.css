@@ -4,16 +4,29 @@
     text-align: left;
 }
 
-/* #mapContainer1 .myTheme .esri-popup__header {
-    background: var(--popup-gradient);
-    padding: 10px 90px;
-}
+.toggle-button {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .toggle-button.dark-mode {
+    background-color: #343a40;
+  }
+  
+  .toggle-button:hover {
+    background-color: #0056b3;
+  }
 
-#mapContainer1 .myTheme .popup-header-container {
-    background: var(--popup-color);
-    padding: 10px;
-    color: white;
-} */
+.esriPopup.myTheme .contentPane,
+.esriPopup.myTheme .actionsPane {
+  background-color:#424242;
+  color:#fff;
+  border-color:0 solid #121310;
+}
 
 .esri-icon-favorite {
     color: #ffcc00;
